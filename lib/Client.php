@@ -17,7 +17,7 @@ class Client
 
     public function getEbayProduct($id)
     {
-        $response = $this->httpClient->get(self::EBAY_PRODUCT_URL, $id, $this->key);
+        $response = $this->httpClient->get(sprintf(self::EBAY_PRODUCT_URL, $id, $this->key));
         $content = $this->parseResponse($response);
         return new Product($content);
     }
