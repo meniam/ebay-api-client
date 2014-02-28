@@ -4,20 +4,23 @@ namespace Catalol;
 
 class Client
 {
-    const EBAY_PRODUCT_URL = 'http://catalol.requ.ru/ebay/product/%s.json?key=%s';
+    const EBAY_PRODUCT_URL = 'http://%s/ebay/product/%s.json?key=%s';
 
     private $httpClient;
     private $key;
+    private $domain;
 
-    public function __construct(\Buzz\Browser $httpClient, $key)
+    public function __construct(\Buzz\Browser $httpClient, $domain, $key)
     {
         $this->httpClient = $httpClient;
         $this->key = $key;
+        $this->key = $domain;
     }
 
     public function getEbayProduct($id)
     {
-        $response = $this->httpClient->get(sprintf(self::EBAY_PRODUCT_URL, $id, $this->key));
+        $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key);
+        $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
         return new Product($content);
     }

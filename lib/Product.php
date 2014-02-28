@@ -92,11 +92,11 @@ class Product
     }
 
     /**
-     * @return Catalol_Seller
+     * @return Seller
      */
     public function getSeller()
     {
-        return new Catalol_Seller($this->data['seller']);
+        return new Seller($this->data['seller']);
     }
 
     /**
@@ -110,4 +110,44 @@ class Product
     public function getVariation()
     {}
 
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->data['originalId'];
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->data['originalLink'];
+    }
+
+    /**
+     * @return array[string]
+     */
+    public function getCategories()
+    {
+        return $this->data['categoryList'];
+    }
+
+    /**
+     * @return array[string]
+     */
+    public function getAvailablePaymentMethods()
+    {
+        return $this->data['paymentMethod'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->data['country'];
+    }
 }
