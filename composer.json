@@ -1,7 +1,7 @@
 {
     "require": {
         "kriswallsmith/buzz": "v0.10",
-        "symfony/serializer": "2.4.*"
+        "symfony/serializer": "v2.4.*"
     },
     "autoload": {
         "psr-0": {

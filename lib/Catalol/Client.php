@@ -18,7 +18,7 @@ class Client
     {
         $this->httpClient = $httpClient;
         $this->key = $key;
-        $this->key = $domain;
+        $this->domain = $domain;
     }
 
     public function getEbayProduct($id)
