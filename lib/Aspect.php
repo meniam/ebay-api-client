@@ -7,7 +7,7 @@ class Aspect
 
     private $valueArray;
 
-    public function __construct($name, $valueArray)
+    public function __construct($name, $valueArray = array())
     {
         $this->name = $name;
         $this->valueArray = $valueArray;

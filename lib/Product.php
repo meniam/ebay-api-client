@@ -40,11 +40,11 @@ class Product
 
     public function getAspect()
     {
-        $aspectList = array();
+        $aspectArray = array();
         foreach ($this->data['aspects'] as $name => $valueArray) {
             $aspectList[] = new Aspect($name, $valueArray);
         }
-        return new Collection($aspectList);
+        return new Collection($aspectArray);
     }
 
     /**
@@ -136,7 +136,13 @@ class Product
     }
 
     public function getVariation()
-    {}
+    {
+        $variationArray = array();
+        foreach ($this->data['variations'] as  $variation) {
+            $variationArray[] = new Variation($variation);
+        }
+        return new Collection($variationArray);
+    }
 
     /**
      * @return string
