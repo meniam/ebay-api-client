@@ -1,10 +1,6 @@
 <?php
 
 namespace Catalol;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 class Client
 {
@@ -31,8 +27,7 @@ class Client
 
     private function parseResponse(\Buzz\Message\MessageInterface $response)
     {
-        $serialize = new Serializer(array(new GetSetMethodNormalizer()), array(new XmlEncoder(), new JsonEncoder()));
-        $content = $serialize->decode($response->getContent(), 'json');
+        $content = json_decode($response->getContent(), true);
         if (!$content || $content['status'] != 'ok') {
             throw new Exception\BadResponse($content['message']);
         }

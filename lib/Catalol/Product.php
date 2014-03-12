@@ -44,7 +44,7 @@ class Product
         foreach ($this->data['aspects'] as $name => $valueArray) {
             $aspectList[] = new Aspect($name, $valueArray);
         }
-        return new Collection($aspectArray);
+        return new \ArrayIterator($aspectArray);
     }
 
     /**
@@ -132,16 +132,19 @@ class Product
      */
     public function getName()
     {
-        return new $this->data['name'];
+        return $this->data['name'];
     }
 
+    /**
+     * @return \ArrayIterator
+     */
     public function getVariation()
     {
         $variationArray = array();
         foreach ($this->data['variations'] as  $variation) {
             $variationArray[] = new Variation($variation);
         }
-        return new Collection($variationArray);
+        return new \ArrayIterator($variationArray);
     }
 
     /**

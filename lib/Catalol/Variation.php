@@ -21,7 +21,7 @@ class Variation
         foreach ($data['aspect-list'] as $name => $valueArray) {
             $aspectArray[] = new Aspect($name, $valueArray);
         }
-        $this->aspectList = new Collection($aspectArray);
+        $this->aspectList = new \ArrayIterator($aspectArray);
     }
 
 
