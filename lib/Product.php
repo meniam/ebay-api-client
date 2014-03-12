@@ -19,12 +19,32 @@ class Product
         return $this->data['price'];
     }
 
+    public function getPaymentMethods()
+    {
+        return $this->data['paymentMethods'];
+    }
+
+    public function getHitCountEbay()
+    {
+        return $this->data['hitCountEbay'];
+    }
+
+
     /**
      * @return string
      */
     public function getCurrency()
     {
         return $this->data['currency'];
+    }
+
+    public function getAspect()
+    {
+        $aspectList = array();
+        foreach ($this->data['aspects'] as $name => $valueArray) {
+            $aspectList[] = new Aspect($name, $valueArray);
+        }
+        return new Collection($aspectList);
     }
 
     /**
@@ -40,15 +60,23 @@ class Product
      */
     public function getShippingCost()
     {
-        return $this->data['shipping_cost'];
+        return $this->data['shippingCostSummary'];
     }
 
     /**
      * @return string
      */
-    public function getCondition()
+    public function getConditionName()
     {
         return $this->data['condition'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getConditionId()
+    {
+        return $this->data['conditionId'];
     }
 
     /**
@@ -60,11 +88,11 @@ class Product
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getExpirationDate()
     {
-        return new DateTime($this->data['expiredAt']);
+        return new \DateTime($this->data['expiredAt']);
     }
 
     /**
