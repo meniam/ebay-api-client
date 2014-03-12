@@ -38,11 +38,14 @@ class Product
         return $this->data['currency'];
     }
 
+    /**
+     * @return \ArrayIterator
+     */
     public function getAspect()
     {
         $aspectArray = array();
         foreach ($this->data['aspects'] as $name => $valueArray) {
-            $aspectList[] = new Aspect($name, $valueArray);
+            $aspectArray[] = new Aspect($name, $valueArray);
         }
         return new \ArrayIterator($aspectArray);
     }
