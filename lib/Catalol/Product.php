@@ -19,11 +19,17 @@ class Product
         return $this->data['price'];
     }
 
+    /**
+     * @return array
+     */
     public function getPaymentMethods()
     {
         return $this->data['paymentMethods'];
     }
 
+    /**
+     * @return int
+     */
     public function getHitCountEbay()
     {
         return $this->data['hitCountEbay'];
@@ -39,9 +45,9 @@ class Product
     }
 
     /**
-     * @return \ArrayIterator
+     * @return \ArrayIterator|Aspect[]
      */
-    public function getAspect()
+    public function getAspectList()
     {
         $aspectArray = array();
         foreach ($this->data['aspects'] as $name => $valueArray) {
@@ -59,11 +65,11 @@ class Product
     }
 
     /**
-     * @return float
+     * @return ShippingCostSummary
      */
-    public function getShippingCost()
+    public function getShippingCostSummary()
     {
-        return $this->data['shippingCostSummary'];
+        return new ShippingCostSummary($this->data['shippingCostSummary']);
     }
 
     /**
@@ -139,9 +145,9 @@ class Product
     }
 
     /**
-     * @return \ArrayIterator
+     * @return \ArrayIterator | Variation[]
      */
-    public function getVariation()
+    public function getVariationList()
     {
         $variationArray = array();
         foreach ($this->data['variations'] as  $variation) {
@@ -170,15 +176,21 @@ class Product
     /**
      * @return array[string]
      */
-    public function getCategories()
+    public function getCategoryArray()
     {
         return $this->data['categoryList'];
     }
 
+    public  function getPrimaryCategory()
+    {
+        return reset($this->data['categoryList']);
+    }
+
+
     /**
      * @return array[string]
      */
-    public function getAvailablePaymentMethods()
+    public function getPaymentMethodArray()
     {
         return $this->data['paymentMethod'];
     }
@@ -189,5 +201,22 @@ class Product
     public function getCountry()
     {
         return $this->data['country'];
+    }
+
+    public function getLocated()
+    {
+        return $this->data['located'];
+    }
+
+    public function getBidCountEbay()
+    {
+        return $this->data['bidCount'];
+    }
+
+    public function getFixedPriceForAuction()
+    {
+        if ($this->data['isAuction'] && $this->data['fixedPrice']['value']) {
+            return new Price($this->data['fixedPrice']['value'], $this->data['fixedPrice']['currency']);
+        }
     }
 }
