@@ -20,14 +20,6 @@ class Product
     }
 
     /**
-     * @return array
-     */
-    public function getPaymentMethods()
-    {
-        return $this->data['paymentMethods'];
-    }
-
-    /**
      * @return int
      */
     public function getHitCountEbay()
@@ -49,11 +41,11 @@ class Product
      */
     public function getAspectList()
     {
-        $aspectArray = array();
-        foreach ($this->data['aspects'] as $name => $valueArray) {
-            $aspectArray[] = new Aspect($name, $valueArray);
-        }
-        return new \ArrayIterator($aspectArray);
+        return new \ArrayIterator(
+            array_map(function($item) {
+                return new Aspect($item);
+            }, $this->data['aspects'])
+        );
     }
 
     /**
@@ -149,11 +141,11 @@ class Product
      */
     public function getVariationList()
     {
-        $variationArray = array();
-        foreach ($this->data['variations'] as  $variation) {
-            $variationArray[] = new Variation($variation);
-        }
-        return new \ArrayIterator($variationArray);
+        return new \ArrayIterator(
+            array_map(function($item) {
+                return new Variation($item);
+            }, $this->data['variations'])
+        );
     }
 
     /**
@@ -174,14 +166,17 @@ class Product
     }
 
     /**
-     * @return array[string]
+     * @return array[int]
      */
-    public function getCategoryArray()
+    public function getCategoriesIds()
     {
         return $this->data['categoryList'];
     }
 
-    public  function getPrimaryCategory()
+    /**
+     * @return int
+     */
+    public function getPrimaryCategoryId()
     {
         return reset($this->data['categoryList']);
     }
@@ -190,7 +185,7 @@ class Product
     /**
      * @return array[string]
      */
-    public function getPaymentMethodArray()
+    public function getPaymentMethods()
     {
         return $this->data['paymentMethod'];
     }
@@ -203,20 +198,36 @@ class Product
         return $this->data['country'];
     }
 
+    /**
+     * @return string
+     */
     public function getLocated()
     {
         return $this->data['located'];
     }
 
+    /**
+     * @return int
+     */
     public function getBidCountEbay()
     {
         return $this->data['bidCount'];
     }
 
+    /**
+     * @return Price
+     */
     public function getFixedPriceForAuction()
     {
-        if ($this->data['isAuction'] && $this->data['fixedPrice']['value']) {
-            return new Price($this->data['fixedPrice']['value'], $this->data['fixedPrice']['currency']);
-        }
+        return new Price($this->data['fixedPrice']['value'], $this->data['fixedPrice']['currency']);
     }
+
+    /**
+     * @return bool
+     */
+    public function hasFixedPrice()
+    {
+        return $this->data['isAuction'] && !empty($this->data['fixedPrice']['value']);
+    }
+
 }
