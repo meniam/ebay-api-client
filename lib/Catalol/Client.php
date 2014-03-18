@@ -14,7 +14,7 @@ class Client
     {
         $this->httpClient = $httpClient;
         $this->key = $key;
-        $this->key = $domain;
+        $this->domain = $domain;
     }
 
     public function getEbayProduct($id)
@@ -29,7 +29,7 @@ class Client
     {
         $content = json_decode($response->getContent(), true);
         if (!$content || $content['status'] != 'ok') {
-            throw new Exception\BadResponse;
+            throw new Exception\BadResponse($content['message']);
         }
         return $content;
     }
