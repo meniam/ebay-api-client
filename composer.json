@@ -1,4 +1,5 @@
 {
+    "require-dependencies": true,
     "require": {
         "kriswallsmith/buzz": "v0.10"
     },
