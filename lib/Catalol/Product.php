@@ -41,11 +41,11 @@ class Product
      */
     public function getAspectList()
     {
-        return new \ArrayIterator(
-            array_map(function($item) {
-                return new Aspect($item);
-            }, $this->data['aspects'])
-        );
+        $aspectArray = array();
+        foreach ($this->data['aspects'] as $name => $valueArray) {
+            $aspectArray[] = new Aspect($name, $valueArray);
+        }
+        return new \ArrayIterator($aspectArray);
     }
 
     /**
@@ -141,11 +141,11 @@ class Product
      */
     public function getVariationList()
     {
-        return new \ArrayIterator(
-            array_map(function($item) {
-                return new Variation($item);
-            }, $this->data['variations'])
-        );
+        $variationArray = array();
+        foreach ($this->data['variations'] as  $variation) {
+            $variationArray[] = new Variation($variation);
+        }
+        return new \ArrayIterator($variationArray);
     }
 
     /**
