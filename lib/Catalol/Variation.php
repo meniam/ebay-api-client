@@ -12,11 +12,14 @@ class Variation
 
     private $imageArray;
 
+    private $sku;
+
     public function __construct($data)
     {
         $this->price = new Price($data['price'], $data['currency']);
         $this->amount = $data['amount'];
         $this->imageArray = $data['image-list'];
+        $this->sku = $data['sku'];
         $aspectArray = array();
         foreach ($data['aspect-list'] as $name => $valueArray) {
             $aspectArray[] = new Aspect($name, $valueArray);
@@ -34,7 +37,7 @@ class Variation
     }
 
     /**
-     * @return Collection
+     * @return \ArrayIterator
      */
     public function getAspectList()
     {
@@ -57,10 +60,12 @@ class Variation
         return $this->imageArray;
     }
 
-
-
-
-
-
+    /**
+     * @return string
+     */
+    public function getSku()
+    {
+        return $this->sku;
+    }
 
 }
