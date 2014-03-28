@@ -93,7 +93,7 @@ class Product
      */
     public function getExpirationDate()
     {
-        return new \DateTime($this->data['expired_at']);
+        return new \DateTime($this->data['expire_at']);
     }
 
     /**
