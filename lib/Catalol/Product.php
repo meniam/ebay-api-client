@@ -93,7 +93,7 @@ class Product
      */
     public function getExpirationDate()
     {
-        return new \DateTime($this->data['expiredAt']);
+        return new \DateTime($this->data['expired_at']);
     }
 
     /**
@@ -171,6 +171,14 @@ class Product
     public function getCategoriesIds()
     {
         return $this->data['categoryList'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getSiteId()
+    {
+        return $this->data['site_id'];
     }
 
     /**
