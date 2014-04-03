@@ -61,7 +61,7 @@ class Product
      */
     public function getShippingCostSummary()
     {
-        return new ShippingCostSummary($this->data['shippingCostSummary']);
+        return new ShippingCostSummary(current($this->data['shippingCostSummary']));
     }
 
     /**
