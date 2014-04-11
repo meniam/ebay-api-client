@@ -174,6 +174,14 @@ class Product
     }
 
     /**
+     * @return string
+     */
+    public function getSiteId()
+    {
+        return $this->data['site_id'];
+    }
+
+    /**
      * @return int
      */
     public function getPrimaryCategoryId()
