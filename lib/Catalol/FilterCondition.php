@@ -3,6 +3,11 @@ namespace Catalol;
 
 class FilterCondition
 {
+    const SITE_ID_USA = 'US';
+    const SITE_ID_UK = 'UK';
+    const SITE_ID_DE = 'DE';
+    const SITE_ID_MOTORS = 'MOTORS';
+
     private $no_variations;
 
     private $min_price;
@@ -29,10 +34,13 @@ class FilterCondition
 
     private $product_info;
 
+    private $seller_name;
+
 
     public function withOutVariations()
     {
         $this->no_variations = 'true';
+        return $this;
     }
 
     public function priceWithIn($minPrice = null, $maxPrice = null)
@@ -54,23 +62,21 @@ class FilterCondition
         return $this;
     }
 
-    /**
-     * @param string
-     * @value new|salvage|undefined
-     */
-    public function condition($condition)
+    public function onlyNew()
     {
-        switch (mb_strtolower($condition)) {
-            case ('new') :
-                $this->condition_id = implode('|', array(1000, 1500, 1750));
-                break;
-            case ('salvage') :
-                $this->condition_id = implode('|', array(2000, 2500, 3000, 4000, 5000, 6000, 7000));
-                break;
-            case ('undefined') :
-                $this->condition_id = '0';
-                break;
-        }
+        $this->condition_id = implode('|', array(1000, 1500, 1750));
+        return $this;
+    }
+
+    public function onlySalvage()
+    {
+        $this->condition_id = implode('|', array(2000, 2500, 3000, 4000, 5000, 6000, 7000));
+        return $this;
+    }
+
+    public function onlyUndefined()
+    {
+        $this->condition_id = '0';
         return $this;
     }
 
@@ -80,6 +86,12 @@ class FilterCondition
     public function expiredAfter($time)
     {
         $this->max_time = $time;
+        return $this;
+    }
+
+    public function productSiteId($siteId)
+    {
+        $this->site_id = $siteId;
         return $this;
     }
 
@@ -116,12 +128,6 @@ class FilterCondition
         return $this;
     }
 
-    public function productSiteId($siteId)
-    {
-        $this->site_id = $siteId;
-        return $this;
-    }
-
     public function toString()
     {
         $parameters = [];
@@ -137,5 +143,11 @@ class FilterCondition
     public function fullInfo()
     {
         $this->product_info = 'medium';
+    }
+
+    public function sellerName($sellerName)
+    {
+        $this->seller_name = $sellerName;
+        return $this;
     }
 }
