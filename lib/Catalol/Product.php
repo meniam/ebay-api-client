@@ -238,6 +238,9 @@ class Product
         return $this->data['isAuction'] && !empty($this->data['fixedPrice']['value']);
     }
 
+    /**
+     * @return Price
+     */
     public function getMinimumToBid()
     {
         return new Price($this->data['minimum_to_bid']['value'], $this->data['minimum_to_bid']['currency']);
