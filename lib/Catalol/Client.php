@@ -5,6 +5,7 @@ namespace Catalol;
 class Client
 {
     const EBAY_PRODUCT_URL = 'http://%s/ebay/product/%s.json?key=%s';
+    const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
 
     private $httpClient;
     private $key;
@@ -32,5 +33,22 @@ class Client
             throw new Exception\BadResponse($content['message']);
         }
         return $content;
+    }
+
+    public function find(FilterCondition $filter)
+    {
+        $url = sprintf(self::EBAY_SEARCH_URL, $this->domain, $this->key);
+        $url = $url . '&' . $filter->toString();
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+
+        return new ProductList(
+            new \ArrayIterator(
+                array_map(
+                    function($elem){return new Product($elem);},
+                    $content['products'])
+            ),
+            $content['total']
+        );
     }
 }
