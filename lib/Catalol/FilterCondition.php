@@ -7,6 +7,15 @@ class FilterCondition
     const SITE_ID_UK = 'UK';
     const SITE_ID_DE = 'DE';
     const SITE_ID_MOTORS = 'MOTORS';
+    const PRICE_DESC = 'PRICE_DESC';
+    const PRICE_ASC = 'PRICE_ASC';
+    const EXPIRE_TIME_DESC = 'EXPIRE_TIME_DESC';
+    const EXPIRE_TIME_ASC = 'EXPIRE_TIME_ASC';
+    const ADD_TIME_ASC = 'ADD_TIME_ASC';
+    const ADD_TIME_DESC = 'ADD_TIME_DESC';
+    const MODIFY_TIME_DESC = 'MODIFY_TIME_DESC';
+    const MODIFY_TIME_ASC = 'MODIFY_TIME_ASC';
+
 
     private $no_variations;
 
@@ -35,6 +44,8 @@ class FilterCondition
     private $product_info;
 
     private $seller_name;
+
+    private $sort;
 
 
     public function withOutVariations()
@@ -149,5 +160,10 @@ class FilterCondition
     {
         $this->seller_name = $sellerName;
         return $this;
+    }
+
+    public function orderBy($sort)
+    {
+        $this->sort = $sort;
     }
 }
