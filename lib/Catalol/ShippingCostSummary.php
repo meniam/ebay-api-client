@@ -9,6 +9,8 @@ class ShippingCostSummary
 
     private $listedShippingService;
 
+    private $name;
+
     public function __construct($data)
     {
         $this->type = $data['type'];
@@ -16,6 +18,7 @@ class ShippingCostSummary
         $this->listedShippingService = new Price(
             $data['listedShippingService']['price'], $data['listedShippingService']['currency']
         );
+        $this->name = $data['name'];
     }
 
     /**
@@ -40,6 +43,14 @@ class ShippingCostSummary
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
 

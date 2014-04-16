@@ -6,6 +6,8 @@ class Client
 {
     const EBAY_PRODUCT_URL = 'http://%s/ebay/product/%s.json?key=%s';
     const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
+    const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
+    const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
 
     private $httpClient;
     private $key;
@@ -38,7 +40,7 @@ class Client
     public function find(FilterCondition $filter)
     {
         $url = sprintf(self::EBAY_SEARCH_URL, $this->domain, $this->key);
-        $url = $url . '&' . $filter->toString();
+        $url .= '&' . $filter->toString();
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
 
@@ -50,5 +52,28 @@ class Client
             ),
             $content['total']
         );
+    }
+
+    public function getSimilarEbayProduct($id)
+    {
+        $url = sprintf(self::EBAY_SIMILAR_URL, $this->domain, $id, $this->key);
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+        return new \ArrayIterator(
+            array_map(
+                function ($elem) {
+                    return new Product($elem);
+                },
+                $content['products'])
+        );
+    }
+
+    public function getShipping(Shipping $shipping)
+    {
+        $url = sprintf(self::EBAY_SIMILAR_URL, $this->domain, $shipping->getId(), $this->key);
+        $url .= '&' . $shipping->toString();
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+        return new ShippingCostSummary($content);
     }
 }
