@@ -70,7 +70,7 @@ class Client
 
     public function getShipping(Shipping $shipping)
     {
-        $url = sprintf(self::EBAY_SIMILAR_URL, $this->domain, $shipping->getId(), $this->key);
+        $url = sprintf(self::EBAY_SHIPPING_URL, $this->domain, $shipping->getId(), $this->key);
         $url .= '&' . $shipping->toString();
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
