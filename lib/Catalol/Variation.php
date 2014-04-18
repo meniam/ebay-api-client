@@ -37,7 +37,7 @@ class Variation
     }
 
     /**
-     * @return \ArrayIterator
+     * @return \ArrayIterator|Aspect[]
      */
     public function getAspectList()
     {
