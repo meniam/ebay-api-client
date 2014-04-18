@@ -195,7 +195,7 @@ class Product
      */
     public function getPaymentMethods()
     {
-        return $this->data['paymentMethod'];
+        return $this->data['paymentMethods'];
     }
 
     /**
