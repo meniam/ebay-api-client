@@ -89,6 +89,17 @@ class Product
     }
 
     /**
+     * @return string
+     */
+    public function getTextDescription()
+    {
+        if (!array_key_exists('text_description', $this->data)) {
+            return null;
+        }
+        return $this->data['text_description'];
+    }
+
+    /**
      * @return \DateTime
      */
     public function getExpirationDate()
