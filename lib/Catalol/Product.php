@@ -24,7 +24,7 @@ class Product
      */
     public function getHitCountEbay()
     {
-        return $this->data['hitCountEbay'];
+        return $this->data['ebay_hits'];
     }
 
 
@@ -68,7 +68,7 @@ class Product
      */
     public function getShippingCostSummary()
     {
-        return new ShippingCostSummary(current($this->data['shippingCostSummary']));
+        return new ShippingCostSummary(current($this->data['shipping_cost']));
     }
 
     /**
@@ -84,7 +84,7 @@ class Product
      */
     public function getConditionId()
     {
-        return $this->data['conditionId'];
+        return $this->data['condition_id'];
     }
 
     /**
@@ -119,7 +119,7 @@ class Product
      */
     public function getMainImageUrl()
     {
-        return $this->data['imageDefault'][0];
+        return $this->data['default_image'][0];
     }
 
     /**
@@ -127,7 +127,7 @@ class Product
      */
     public function getImagesUrls()
     {
-        return $this->data['imageDefault'];
+        return $this->data['default_image'];
     }
 
     /**
@@ -135,7 +135,7 @@ class Product
      */
     public function isAuction()
     {
-        return $this->data['isAuction'];
+        return $this->data['is_auction'];
     }
 
     /**
@@ -171,7 +171,7 @@ class Product
      */
     public function getId()
     {
-        return $this->data['originalId'];
+        return $this->data['id'];
     }
 
 
@@ -180,7 +180,7 @@ class Product
      */
     public function getUrl()
     {
-        return $this->data['originalLink'];
+        return $this->data['link'];
     }
 
     /**
@@ -188,7 +188,7 @@ class Product
      */
     public function getCategoriesIds()
     {
-        return $this->data['categoryList'];
+        return $this->data['categories'];
     }
 
     /**
@@ -204,7 +204,7 @@ class Product
      */
     public function getPrimaryCategoryId()
     {
-        return reset($this->data['categoryList']);
+        return reset($this->data['categories']);
     }
 
 
@@ -213,7 +213,7 @@ class Product
      */
     public function getPaymentMethods()
     {
-        return $this->data['paymentMethods'];
+        return $this->data['payment_methods'];
     }
 
     /**
@@ -229,7 +229,7 @@ class Product
      */
     public function getLocated()
     {
-        return $this->data['located'];
+        return $this->data['location'];
     }
 
     /**
@@ -245,7 +245,7 @@ class Product
      */
     public function getFixedPriceForAuction()
     {
-        return new Price($this->data['fixedPrice']['value'], $this->data['fixedPrice']['currency']);
+        return new Price($this->data['fixed_price']['value'], $this->data['fixed_price']['currency']);
     }
 
     /**
@@ -253,7 +253,7 @@ class Product
      */
     public function hasFixedPrice()
     {
-        return $this->data['isAuction'] && !empty($this->data['fixedPrice']['value']);
+        return $this->data['is_auction'] && !empty($this->data['fixed_price']['value']);
     }
 
     /**

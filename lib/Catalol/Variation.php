@@ -18,12 +18,12 @@ class Variation
     {
         $this->price = new Price($data['price'], $data['currency']);
         $this->amount = $data['amount'];
-        $this->imageArray = $data['image-list'];
+        $this->imageArray = $data['images'];
         $this->sku = $data['sku'];
         $aspectArray = array();
-        foreach ($data['aspect-list']['original'] as $name => $valueList) {
+        foreach ($data['aspects']['original'] as $name => $valueList) {
             $cond = new AspectCondition();
-            $translationAspect = each($data['aspect-list']['translation']);
+            $translationAspect = each($data['aspects']['translation']);
             $cond->setName($name)
                 ->setValueList($valueList)
                 ->setTranslationName($translationAspect['key'])

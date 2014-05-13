@@ -14,9 +14,9 @@ class ShippingCostSummary
     public function __construct($data)
     {
         $this->type = $data['type'];
-        $this->shippingService = new Price($data['shippingService']['price'], $data['shippingService']['currency']);
+        $this->shippingService = new Price($data['country_shipping_price']['price'], $data['country_shipping_price']['currency']);
         $this->listedShippingService = new Price(
-            $data['listedShippingService']['price'], $data['listedShippingService']['currency']
+            $data['world_shipping_price']['price'], $data['world_shipping_price']['currency']
         );
         $this->name = $data['name'];
     }
