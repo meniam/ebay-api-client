@@ -21,13 +21,16 @@ class Variation
         $this->imageArray = $data['image-list'];
         $this->sku = $data['sku'];
         $aspectArray = array();
-        foreach ($data['aspect-list'] as $translation => $aspectList) {
-            foreach ($aspectList as $name => $valueArray) {
-                $aspectArray[] = new Aspect($name, $valueArray);
-            }
-            $this->aspectList[$translation] = new \ArrayIterator($aspectArray);
-            $aspectArray = [];
+        foreach ($data['aspect-list']['original'] as $name => $valueList) {
+            $cond = new AspectCondition();
+            $translationAspect = each($data['aspect-list']['translation']);
+            $cond->setName($name)
+                ->setValueList($valueList)
+                ->setTranslationName($translationAspect['key'])
+                ->setTranslationValueList($translationAspect['value']);
+            $aspectArray[] = new Aspect($cond);
         }
+        $this->aspectList = new \ArrayIterator($aspectArray);
     }
 
 
@@ -44,15 +47,7 @@ class Variation
      */
     public function getAspectList()
     {
-        return $this->aspectList['original'];
-    }
-
-    /**
-     * @return \ArrayIterator|Aspect[]
-     */
-    public function getTranslationAspectList()
-    {
-        return $this->aspectList['translation'];
+        return $this->aspectList;
     }
 
     /**

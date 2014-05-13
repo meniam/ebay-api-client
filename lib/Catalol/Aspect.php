@@ -7,10 +7,16 @@ class Aspect
 
     private $valueArray;
 
-    public function __construct($name, $valueArray = array())
+    private $translationName;
+
+    private $translationValueArray;
+
+    public function __construct(AspectCondition $cond)
     {
-        $this->name = $name;
-        $this->valueArray = $valueArray;
+        $this->name = $cond->getName();
+        $this->valueArray = $cond->getValueList();
+        $this->translationName = $cond->getTranslationName();
+        $this->translationValueArray = $cond->getTranslationValueList();
     }
 
     /**
@@ -21,12 +27,22 @@ class Aspect
         return $this->name;
     }
 
+    public function getTranslationName()
+    {
+        return $this->translationName;
+    }
+
     /**
      * @return array
      */
     public function getValueArray()
     {
         return $this->valueArray;
+    }
+
+    public function getTranslationValueArray()
+    {
+        return $this->translationValueArray;
     }
 
 
