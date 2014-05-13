@@ -42,7 +42,16 @@ class Product
     public function getAspectList()
     {
         $aspectArray = array();
-        foreach ($this->data['aspects'] as $name => $valueArray) {
+        foreach ($this->data['aspects']['original'] as $name => $valueArray) {
+            $aspectArray[] = new Aspect($name, $valueArray);
+        }
+        return new \ArrayIterator($aspectArray);
+    }
+
+    public function getTranslateAspectList()
+    {
+        $aspectArray = array();
+        foreach ($this->data['aspects']['translate'] as $name => $valueArray) {
             $aspectArray[] = new Aspect($name, $valueArray);
         }
         return new \ArrayIterator($aspectArray);
