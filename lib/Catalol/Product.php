@@ -171,7 +171,7 @@ class Product
      */
     public function getId()
     {
-        return $this->data['id'];
+        return $this->data['original_id'];
     }
 
 
