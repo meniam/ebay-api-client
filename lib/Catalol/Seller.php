@@ -20,11 +20,19 @@ class Seller
     }
 
     /**
+     * @return string
+     */
+    public function getRatingStar()
+    {
+        return $this->data['rating_star'];
+    }
+
+    /**
      * @return int
      */
     public function getScore()
     {
-        return $this->data['feedbackScore'];
+        return $this->data['score'];
     }
 
     /**
@@ -32,6 +40,6 @@ class Seller
      */
     public function getPositiveFeedbackPercent()
     {
-        return $this->data['positiveFeedbackPercent'];
+        return $this->data['positive_feedback_percent'];
     }
 }
