@@ -21,7 +21,7 @@ class Variation
         $this->imageArray = $data['image-list'];
         $this->sku = $data['sku'];
         $aspectArray = array();
-        foreach ($data['aspect-list']['original'] as $translation => $aspectList) {
+        foreach ($data['aspect-list'] as $translation => $aspectList) {
             foreach ($aspectList as $name => $valueArray) {
                 $aspectArray[] = new Aspect($name, $valueArray);
             }
