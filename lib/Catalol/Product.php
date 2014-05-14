@@ -42,7 +42,7 @@ class Product
     public function getAspectList()
     {
         if (!$this->data['aspects']) {
-            return [];
+            return new \ArrayIterator([]);
         }
         $aspects = [];
         foreach ($this->data['aspects']['original'] as $name => $valueList) {
