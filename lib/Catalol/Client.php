@@ -2,6 +2,12 @@
 
 namespace Catalol;
 
+use Catalol\Exception\ApiError;
+use Catalol\Exception\BadResponse;
+use Catalol\Exception\CatalolIsDown;
+use Catalol\Exception\NotFound;
+use Catalol\Exception\ServiceIsDown;
+
 class Client
 {
     const EBAY_PRODUCT_URL = 'http://%s/ebay/product/%s.json?key=%s&lang=%s';
@@ -23,7 +29,11 @@ class Client
     public function getEbayProduct($id, $lang = 'ru')
     {
         $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key, (string)$lang);
-        $response = $this->httpClient->get($url);
+        try {
+            $response = $this->httpClient->get($url);
+        } catch (\Buzz\Exception\ClientException $e) {
+            throw new ServiceIsDown('host is unreachable');
+        }
         $content = $this->parseResponse($response);
         return new Product($content);
     }
@@ -31,10 +41,30 @@ class Client
     private function parseResponse(\Buzz\Message\MessageInterface $response)
     {
         $content = json_decode($response->getContent(), true);
-        if (!$content || $content['status'] != 'ok') {
-            throw new Exception\BadResponse($content['message']);
+        if (!$content || !isset($content['status'])) {
+            throw new Exception\CatalolIsDown('No status provided');
+        }
+        if ($content['status'] != 'ok') {
+            return $this->parseBadResponse($content);
         }
         return $content;
+    }
+
+    private function parseBadResponse($content)
+    {
+        if (!isset($content['code'])) {
+            throw new BadResponse('No error code provided');
+        }
+        switch ($content['code']) {
+            case 'not_found':
+                throw new NotFound($content['message']);
+            case 'api_error':
+                throw new ApiError($content['message']);
+            case 'internal_error':
+                throw new ServiceIsDown($content['message']);
+            default:
+                throw new BadResponse($content['message']);
+        }
     }
 
     public function find(FilterCondition $filter)
