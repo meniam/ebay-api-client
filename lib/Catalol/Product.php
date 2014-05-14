@@ -119,7 +119,7 @@ class Product
      */
     public function getMainImageUrl()
     {
-        return $this->data['default_image'][0];
+        return $this->data['default_images'][0];
     }
 
     /**
@@ -127,7 +127,7 @@ class Product
      */
     public function getImagesUrls()
     {
-        return $this->data['default_image'];
+        return $this->data['default_images'];
     }
 
     /**
@@ -237,7 +237,7 @@ class Product
      */
     public function getBidCountEbay()
     {
-        return $this->data['bidCount'];
+        return $this->data['bid_count'];
     }
 
     /**
