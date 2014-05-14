@@ -41,18 +41,20 @@ class Product
      */
     public function getAspectList()
     {
-        $aspectArray = array();
+        if (!$this->data['aspects']) {
+            return [];
+        }
+        $aspects = [];
         foreach ($this->data['aspects']['original'] as $name => $valueList) {
-
+            $translatedAspect = each($this->data['aspects']['translation']);
             $cond = new AspectCondition();
-            $translationAspect = each($this->data['aspects']['translation']);
             $cond->setName($name)
                 ->setValueList($valueList)
-                ->setTranslationName($translationAspect['key'])
-                ->setTranslationValueList($translationAspect['value']);
-            $aspectArray[] = new Aspect($cond);
+                ->setTranslationName($translatedAspect['key'])
+                ->setTranslationValueList($translatedAspect['value']);
+            $aspects[] = new Aspect($cond);
         }
-        return new \ArrayIterator($aspectArray);
+        return new \ArrayIterator($aspects);
     }
 
     /**
