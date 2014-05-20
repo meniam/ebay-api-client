@@ -4,6 +4,10 @@ namespace Catalol;
 
 class Product
 {
+    private $domainList = [
+        'DE' => 'ebay.de',
+        'UK' => 'ebay.co.uk'
+    ];
     private $data;
 
     public function __construct(array $data)
@@ -95,6 +99,14 @@ class Product
     public function getDescription()
     {
         return $this->data['description'];
+    }
+
+    public function getUrlBySiteId()
+    {
+        if (!array_key_exists($this->getSiteId(), $this->domainList)) {
+            return $this->getUrl();
+        }
+        return preg_replace("#ebay\.com#i", $this->domainList[$this->getSiteId()], $this->getUrl());
     }
 
     /**
