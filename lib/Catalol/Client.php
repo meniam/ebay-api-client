@@ -84,10 +84,10 @@ class Client
         );
     }
 
-    public function getSimilarEbayProduct($id)
+    public function getSimilarEbayProduct($id, $count = 5)
     {
         $url = sprintf(self::EBAY_SIMILAR_URL, $this->domain, $id, $this->key);
-        $response = $this->httpClient->get($url);
+        $response = $this->httpClient->get($url . '&count=' . $count);
         $content = $this->parseResponse($response);
         return new \ArrayIterator(
             array_map(
