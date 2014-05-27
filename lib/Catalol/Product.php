@@ -49,13 +49,14 @@ class Product
             return new \ArrayIterator([]);
         }
         $aspects = [];
-        foreach ($this->data['aspects']['original'] as $name => $valueList) {
-            $translatedAspect = each($this->data['aspects']['translation']);
+        $translatedKeys = array_combine(array_keys($this->data['aspects']['original']),
+            array_keys($this->data['aspects']['translation']));
+        foreach ($translatedKeys as $name=>$translatedName) {
             $cond = new AspectCondition();
             $cond->setName($name)
-                ->setValueList($valueList)
-                ->setTranslationName($translatedAspect['key'])
-                ->setTranslationValueList($translatedAspect['value']);
+                ->setValueList($this->data['aspects']['original'][$name])
+                ->setTranslationName($translatedName)
+                ->setTranslationValueList($this->data['aspects']['translation'][$translatedName]);
             $aspects[] = new Aspect($cond);
         }
         return new \ArrayIterator($aspects);
