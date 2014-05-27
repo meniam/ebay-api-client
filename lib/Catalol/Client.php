@@ -4,7 +4,6 @@ namespace Catalol;
 
 use Catalol\Exception\ApiError;
 use Catalol\Exception\BadResponse;
-use Catalol\Exception\CatalolIsDown;
 use Catalol\Exception\NotFound;
 use Catalol\Exception\ServiceIsDown;
 
@@ -42,7 +41,7 @@ class Client
     {
         $content = json_decode($response->getContent(), true);
         if (!$content || !isset($content['status'])) {
-            throw new Exception\CatalolIsDown('No status provided');
+            throw new Exception\ServiceIsDown('No status provided');
         }
         if ($content['status'] != 'ok') {
             return $this->parseBadResponse($content);
@@ -84,10 +83,10 @@ class Client
         );
     }
 
-    public function getSimilarEbayProduct($id)
+    public function getSimilarEbayProduct($id, $count = 5)
     {
         $url = sprintf(self::EBAY_SIMILAR_URL, $this->domain, $id, $this->key);
-        $response = $this->httpClient->get($url);
+        $response = $this->httpClient->get($url . '&count=' . $count);
         $content = $this->parseResponse($response);
         return new \ArrayIterator(
             array_map(
