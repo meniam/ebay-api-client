@@ -7,6 +7,10 @@ class FilterCondition
     const SITE_ID_UK = 'UK';
     const SITE_ID_DE = 'DE';
     const SITE_ID_MOTORS = 'MOTORS';
+    const USA = 'US';
+    const UK = 'UK';
+    const DE = 'DE';
+    const MOTORS = 'MOTORS';
     const PRICE_DESC = 'PRICE_DESC';
     const PRICE_ASC = 'PRICE_ASC';
     const EXPIRE_TIME_DESC = 'EXPIRE_TIME_DESC';
@@ -18,6 +22,10 @@ class FilterCondition
 
 
     private $no_variations;
+
+    private $category_id;
+
+    private $country;
 
     private $min_price;
 
@@ -46,6 +54,11 @@ class FilterCondition
     private $seller_name;
 
     private $sort;
+
+    public function __construct()
+    {
+        $this->min_time = time();
+    }
 
 
     public function withOutVariations()
@@ -82,6 +95,13 @@ class FilterCondition
     public function onlySalvage()
     {
         $this->condition_id = implode('|', array(2000, 2500, 3000, 4000, 5000, 6000, 7000));
+        return $this;
+    }
+
+    public function byCategory($id, $country = self::USA)
+    {
+        $this->category_id = $id;
+        $this->country = $country;
         return $this;
     }
 
