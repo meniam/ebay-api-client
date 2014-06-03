@@ -19,8 +19,8 @@ class Variation
         $this->price = new Price($data['price'], $data['currency']);
         $this->amount = $data['amount'];
         $this->imageArray = $data['images'];
-        $this->sku = $data['sku'];
         $aspectArray = array();
+        $this->sku = $this->generateSku($data['aspects']['original']);
         foreach ($data['aspects']['original'] as $name => $valueList) {
             $cond = new AspectCondition();
             $translationAspect = each($data['aspects']['translation']);
@@ -72,6 +72,16 @@ class Variation
     public function getSku()
     {
         return $this->sku;
+    }
+
+    private function generateSku($aspects)
+    {
+        ksort($aspects);
+        $params = [];
+        foreach ($aspects as $k=>$v) {
+            $params[] = $k . '=' . implode('|', $v);
+        }
+        return md5(implode('&', $params));
     }
 
 }
