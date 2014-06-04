@@ -167,6 +167,7 @@ class FilterCondition
     public function fullInfo()
     {
         $this->product_info = 'medium';
+        return $this;
     }
 
     public function sellerName($sellerName)
@@ -178,6 +179,7 @@ class FilterCondition
     public function orderBy($sort)
     {
         $this->sort = $sort;
+        return $this;
     }
 
     public function byExactPhrase($phrase)
