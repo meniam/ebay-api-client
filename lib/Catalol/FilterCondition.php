@@ -21,47 +21,40 @@ class FilterCondition
     const MODIFY_TIME_ASC = 'MODIFY_TIME_ASC';
 
 
+    /**
+     * @deprecated
+     */
     private $no_variations;
 
     private $category_id;
-
     private $country;
-
     private $min_price;
-
     private $max_price;
-
     private $condition_id;
-
     private $auction;
-
     private $start;
-
     private $limit;
-
     private $min_time;
-
     private $max_time;
-
     private $site_id;
-
     private $min_amount;
-
     private $max_amount;
-
     private $product_info;
-
     private $seller_name;
-
     private $sort;
+    private $exact_phrase;
 
     public function __construct()
     {
         $this->min_time = time();
     }
 
-
-    public function withOutVariations()
+    /**
+     * @deprecated SHOULD NOT affect search results
+     *
+     * This function will be removed in the next version
+     */
+    public function withoutVariations()
     {
         $this->no_variations = 'true';
         return $this;
@@ -141,7 +134,7 @@ class FilterCondition
         return $this;
     }
 
-    public function withOutAuction()
+    public function withoutAuction()
     {
         $this->auction = 'false';
         return $this;
@@ -185,5 +178,11 @@ class FilterCondition
     public function orderBy($sort)
     {
         $this->sort = $sort;
+    }
+
+    public function byExactPhrase($phrase)
+    {
+        $this->exact_phrase = $phrase;
+        return $this;
     }
 }
