@@ -16,11 +16,20 @@ class Product
     }
 
     /**
+     * @deprecated use getCurrentPrice() instead
      * @return float
      */
     public function getPrice()
     {
         return $this->data['price'];
+    }
+
+    /**
+     * @return Price
+     */
+    public function getCurrentPrice()
+    {
+        return new Price($this->data['price'], $this->data['currency']);
     }
 
     /**
@@ -33,6 +42,7 @@ class Product
 
 
     /**
+     * @deprecated use getCurrentPrice() instead
      * @return string
      */
     public function getCurrency()
@@ -41,9 +51,18 @@ class Product
     }
 
     /**
-     * @return \ArrayIterator|Aspect[]
+     * @deprecated
+     * @see getAspects
      */
     public function getAspectList()
+    {
+        return $this->getAspects();
+    }
+
+    /**
+     * @return \ArrayIterator|Aspect[]
+     */
+    public function getAspects()
     {
         if (!$this->data['aspects']) {
             return new \ArrayIterator([]);
@@ -71,9 +90,16 @@ class Product
     }
 
     /**
+     * @deprecated
+     * @see getShippingCost()
      * @return ShippingCostSummary
      */
     public function getShippingCostSummary()
+    {
+        return $this->getShippingCost();
+    }
+
+    public function getShippingCost()
     {
         return new ShippingCostSummary($this->data['shipping_cost']);
     }
@@ -240,9 +266,19 @@ class Product
     }
 
     /**
+     * @deprecated
+     * @see Product::getLocation
      * @return string
      */
     public function getLocated()
+    {
+        return $this->getLocation();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
     {
         return $this->data['location'];
     }
