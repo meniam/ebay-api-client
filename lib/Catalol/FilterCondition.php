@@ -15,16 +15,6 @@ class FilterCondition
     const PRICE_ASC = 'PRICE_ASC';
     const EXPIRE_TIME_DESC = 'EXPIRE_TIME_DESC';
     const EXPIRE_TIME_ASC = 'EXPIRE_TIME_ASC';
-    const ADD_TIME_ASC = 'ADD_TIME_ASC';
-    const ADD_TIME_DESC = 'ADD_TIME_DESC';
-    const MODIFY_TIME_DESC = 'MODIFY_TIME_DESC';
-    const MODIFY_TIME_ASC = 'MODIFY_TIME_ASC';
-
-
-    /**
-     * @deprecated
-     */
-    private $no_variations;
 
     private $category_id;
     private $country;
@@ -47,17 +37,6 @@ class FilterCondition
     public function __construct()
     {
         $this->min_time = time();
-    }
-
-    /**
-     * @deprecated SHOULD NOT affect search results
-     *
-     * This function will be removed in the next version
-     */
-    public function withoutVariations()
-    {
-        $this->no_variations = 'true';
-        return $this;
     }
 
     public function priceWithIn($minPrice = null, $maxPrice = null)
