@@ -4,37 +4,54 @@ namespace Catalol;
 class ShippingCostSummary
 {
     private $type;
-
-    private $shippingService;
-
-    private $listedShippingService;
-
+    private $countryShippingPrice;
+    private $worldShippingPrice;
     private $name;
 
     public function __construct($data)
     {
         $this->type = $data['type'];
-        $this->shippingService = new Price($data['country_shipping_price']['price'], $data['country_shipping_price']['currency']);
-        $this->listedShippingService = new Price(
+        $this->countryShippingPrice = new Price($data['country_shipping_price']['price'], $data['country_shipping_price']['currency']);
+        $this->worldShippingPrice = new Price(
             $data['world_shipping_price']['price'], $data['world_shipping_price']['currency']
         );
         $this->name = $data['name'];
     }
 
     /**
+     * @deprecated
+     * @see getWorldShippingPrice()
      * @return Price
      */
     public function getListedShippingService()
     {
-        return $this->listedShippingService;
+        return $this->getWorldShippingPrice();
     }
 
     /**
      * @return Price
      */
+    public function getWorldShippingPrice()
+    {
+        return $this->worldShippingPrice;
+    }
+
+    /**
+     * @deprecated
+     * @see getCountryShippingPrice()
+     * @return Price
+     */
     public function getShippingService()
     {
-        return $this->shippingService;
+        $this->getCountryShippingPrice();
+    }
+
+    /**
+     * @return Price
+     */
+    public function getCountryShippingPrice()
+    {
+        return $this->countryShippingPrice;
     }
 
     /**
