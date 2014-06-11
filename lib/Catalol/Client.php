@@ -10,7 +10,7 @@ use Catalol\Exception\ServiceIsDown;
 
 class Client
 {
-    const EBAY_PRODUCT_URL = 'http://%s/ebay/product/%s.json?key=%s&lang=%s';
+    const EBAY_PRODUCT_URL = 'http://%s/ebay/product/%s.json?key=%s&lang=%s&country=%s';
     const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
@@ -26,9 +26,9 @@ class Client
         $this->domain = $domain;
     }
 
-    public function getEbayProduct($id, $lang = 'ru')
+    public function getEbayProduct($id, $lang = 'ru', $countryShortName = 'USA')
     {
-        $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key, (string)$lang);
+        $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key, (string)$lang, $countryShortName);
         try {
             $response = $this->httpClient->get($url);
         } catch (\Buzz\Exception\ClientException $e) {
