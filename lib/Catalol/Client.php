@@ -4,9 +4,8 @@ namespace Catalol;
 
 use Catalol\Exception\ApiError;
 use Catalol\Exception\BadResponse;
-use Catalol\Exception\CatalolIsDown;
-use Catalol\Exception\NotFound;
 use Catalol\Exception\ServiceIsDown;
+use Catalol\Exception\NotFound;
 
 class Client
 {
@@ -42,7 +41,7 @@ class Client
     {
         $content = json_decode($response->getContent(), true);
         if (!$content || !isset($content['status'])) {
-            throw new Exception\CatalolIsDown('No status provided');
+            throw new Exception\ServiceIsDown('No status provided');
         }
         if ($content['status'] != 'ok') {
             return $this->parseBadResponse($content);
