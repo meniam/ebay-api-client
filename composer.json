@@ -1,4 +1,6 @@
 {
+    "name": "esteit/catalol-api-client",
+    "description": "FPC client",
     "require": {
         "kriswallsmith/buzz": "v0.10"
     },
