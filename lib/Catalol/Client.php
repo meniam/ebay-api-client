@@ -17,6 +17,7 @@ class Client
     private $httpClient;
     private $key;
     private $domain;
+    private $translationLang = 'ru';
 
     public function __construct(\Buzz\Browser $httpClient, $domain, $key)
     {
@@ -25,9 +26,14 @@ class Client
         $this->domain = $domain;
     }
 
-    public function getEbayProduct($id, $lang = 'ru')
+    public function setTranslationLang($lang)
     {
-        $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key, (string)$lang);
+        $this->translationLang = strval($lang);
+    }
+
+    public function getEbayProduct($id)
+    {
+        $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key, $this->translationLang);
         try {
             $response = $this->httpClient->get($url);
         } catch (\Buzz\Exception\ClientException $e) {
