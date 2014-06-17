@@ -4,11 +4,8 @@ namespace Catalol;
 class Shipping
 {
     private $id;
-
     private $amount;
-
     private $country;
-
     private $postal_code;
 
 
@@ -56,7 +53,4 @@ class Shipping
     {
         return $this->id;
     }
-
-
-
 }

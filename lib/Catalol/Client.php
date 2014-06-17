@@ -43,35 +43,6 @@ class Client
         return new Product($content);
     }
 
-    private function parseResponse(\Buzz\Message\MessageInterface $response)
-    {
-        $content = json_decode($response->getContent(), true);
-        if (!$content || !isset($content['status'])) {
-            throw new Exception\ServiceIsDown('No status provided');
-        }
-        if ($content['status'] != 'ok') {
-            return $this->parseBadResponse($content);
-        }
-        return $content;
-    }
-
-    private function parseBadResponse($content)
-    {
-        if (!isset($content['code'])) {
-            throw new BadResponse('No error code provided');
-        }
-        switch ($content['code']) {
-            case 'not_found':
-                throw new NotFound($content['message']);
-            case 'api_error':
-                throw new ApiError($content['message']);
-            case 'internal_error':
-                throw new ServiceIsDown($content['message']);
-            default:
-                throw new BadResponse($content['message']);
-        }
-    }
-
     public function find(FilterCondition $filter)
     {
         $url = sprintf(self::EBAY_SEARCH_URL, $this->domain, $this->key);
@@ -110,5 +81,34 @@ class Client
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
         return new ShippingCostSummary($content);
+    }
+
+    private function parseResponse(\Buzz\Message\MessageInterface $response)
+    {
+        $content = json_decode($response->getContent(), true);
+        if (!$content || !isset($content['status'])) {
+            throw new Exception\ServiceIsDown('No status provided');
+        }
+        if ($content['status'] != 'ok') {
+            return $this->parseBadResponse($content);
+        }
+        return $content;
+    }
+
+    private function parseBadResponse($content)
+    {
+        if (!isset($content['code'])) {
+            throw new BadResponse('No error code provided');
+        }
+        switch ($content['code']) {
+            case 'not_found':
+                throw new NotFound($content['message']);
+            case 'api_error':
+                throw new ApiError($content['message']);
+            case 'internal_error':
+                throw new ServiceIsDown($content['message']);
+            default:
+                throw new BadResponse($content['message']);
+        }
     }
 }

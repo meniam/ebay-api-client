@@ -16,70 +16,49 @@ class FilterCondition
     const EXPIRE_TIME_DESC = 'EXPIRE_TIME_DESC';
     const EXPIRE_TIME_ASC = 'EXPIRE_TIME_ASC';
 
-    private $category_id;
-    private $country;
-    private $min_price;
-    private $max_price;
-    private $condition_id;
-    private $auction;
-    private $start;
-    private $limit;
-    private $min_time;
-    private $max_time;
-    private $site_id;
-    private $min_amount;
-    private $max_amount;
-    private $product_info;
-    private $seller_name;
-    private $sort;
-    private $exact_phrase;
+    private $params = [];
 
-    public function __construct()
+    public function priceWithin($minPrice = null, $maxPrice = null)
     {
-        $this->min_time = time();
-    }
-
-    public function priceWithIn($minPrice = null, $maxPrice = null)
-    {
-        $this->min_price = $minPrice;
-        $this->max_price = $maxPrice;
+        $this->params['min_price'] = $minPrice;
+        $this->params['max_price'] = $maxPrice;
         return $this;
     }
 
     public function start($start = 0)
     {
-        $this->start = $start;
+        $this->params['start'] = $start;
         return $this;
     }
 
     public function limit($limit = 50)
     {
-        $this->limit = $limit;
+        $this->params['limit'] = $limit;
         return $this;
     }
 
     public function onlyNew()
     {
-        $this->condition_id = implode('|', array(1000, 1500, 1750));
+        $this->params['condition_id'] = implode('|', array(1000, 1500, 1750));
         return $this;
     }
 
     public function onlySalvage()
     {
-        $this->condition_id = implode('|', array(2000, 2500, 3000, 4000, 5000, 6000, 7000));
+        $this->params['condition_id'] = implode('|', array(2000, 2500, 3000, 4000, 5000, 6000, 7000));
         return $this;
     }
 
     public function byCategory($id, $country = self::USA)
     {
-        $this->category_id = $id;
-        $this->country = $country;
+        $this->params['category_id'] = $id;
+        $this->params['country'] = $country;
         return $this;
     }
 
     public function onlyUndefined()
     {
-        $this->condition_id = '0';
+        $this->params['condition_id'] = '0';
         return $this;
     }
 
@@ -88,13 +67,7 @@ class FilterCondition
      */
     public function expiredAfter($time)
     {
-        $this->max_time = $time;
-        return $this;
-    }
-
-    public function productSiteId($siteId)
-    {
-        $this->site_id = $siteId;
+        $this->params['max_time'] = $time;
         return $this;
     }
 
@@ -103,67 +76,72 @@ class FilterCondition
      */
     public function expiredBefore($time)
     {
-        $this->min_time = $time;
+        $this->params['min_time'] = $time;
+        return $this;
+    }
+
+    public function productSiteId($siteId)
+    {
+        $this->params['site_id'] = $siteId;
         return $this;
     }
 
     public function auctionOnly()
     {
-        $this->auction = 'true';
+        $this->params['auction'] = 'true';
         return $this;
     }
 
     public function withoutAuction()
     {
-        $this->auction = 'false';
+        $this->params['auction'] = 'false';
         return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function minAmount($amount)
     {
-        $this->min_amount = $amount;
+        $this->params['min_amount'] = $amount;
         return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function maxAmount($amount)
     {
-        $this->max_amount = $amount;
+        $this->params['max_amount'] = $amount;
         return $this;
     }
 
     public function toString()
     {
-        $parameters = [];
-        foreach (get_object_vars($this) as $key => $element) {
-            if (empty($element)) {
-                continue;
-            }
-            $parameters[$key] = $element;
-        }
-        return http_build_query($parameters);
+        return http_build_query($this->params);
     }
 
     public function fullInfo()
     {
-        $this->product_info = 'medium';
+        $this->params['product_info'] = 'medium';
         return $this;
     }
 
     public function sellerName($sellerName)
     {
-        $this->seller_name = $sellerName;
+        $this->params['seller_name'] = $sellerName;
         return $this;
     }
 
     public function orderBy($sort)
     {
-        $this->sort = $sort;
+        $this->params['sort'] = $sort;
         return $this;
     }
 
     public function byExactPhrase($phrase)
     {
-        $this->exact_phrase = $phrase;
+        $this->params['exact_phrase'] = $phrase;
         return $this;
     }
 }

@@ -4,11 +4,8 @@ namespace Catalol;
 class Aspect
 {
     private $name;
-
     private $valueArray;
-
     private $translationName;
-
     private $translationValueArray;
 
     public function __construct(AspectCondition $cond)
