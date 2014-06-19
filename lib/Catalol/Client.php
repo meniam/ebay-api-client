@@ -13,7 +13,7 @@ class Client
     const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
-    const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s';
+    const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&country=%s';
 
     private $httpClient;
     private $key;
@@ -32,9 +32,10 @@ class Client
         $this->translationLang = strval($lang);
     }
 
-    public function getEbayProduct($id)
+    public function getEbayProduct($id, $country = 'US')
     {
-        $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key, $this->translationLang);
+        $url = sprintf(self::EBAY_PRODUCT_URL,
+            $this->domain, $id, $this->key, $this->translationLang, $country);
         try {
             $response = $this->httpClient->get($url);
         } catch (\Buzz\Exception\ClientException $e) {
@@ -75,10 +76,10 @@ class Client
         );
     }
 
-    public function getProductWithSimilars($id, $count = 5)
+    public function getProductWithSimilars($id, $count = 5, $country = 'US')
     {
         $url = sprintf(self::EBAY_PRODUCT_WITH_SIMILAR_URL,
-                $this->domain, $id, $this->key, $this->translationLang);
+                $this->domain, $id, $this->key, $this->translationLang, $country);
         try {
             $response = $this->httpClient->get($url . '&count=' . $count);
         } catch (\Buzz\Exception\ClientException $e) {
