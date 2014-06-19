@@ -13,7 +13,7 @@ class Client
     const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
-    const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&country=%s';
+    const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&lang=%s&country=%s';
 
     private $httpClient;
     private $key;
