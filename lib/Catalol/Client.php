@@ -13,6 +13,7 @@ class Client
     const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
+    const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s';
 
     private $httpClient;
     private $key;
@@ -72,6 +73,19 @@ class Client
                 },
                 $content['products'])
         );
+    }
+
+    public function getProductWithSimilars($id, $count = 5)
+    {
+        $url = sprintf(self::EBAY_PRODUCT_WITH_SIMILAR_URL,
+                $this->domain, $id, $this->key, $this->translationLang);
+        try {
+            $response = $this->httpClient->get($url . '&count=' . $count);
+        } catch (\Buzz\Exception\ClientException $e) {
+            throw new ServiceIsDown('host is unreachable');
+        }
+        $content = $this->parseResponse($response);
+        return new Product($content);
     }
 
     public function getShipping(Shipping $shipping)

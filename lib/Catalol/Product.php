@@ -315,4 +315,12 @@ class Product
         return new Price($this->data['minimum_to_bid']['value'], $this->data['minimum_to_bid']['currency']);
     }
 
+    public function getSimilars()
+    {
+        if (!isset($this->data['similar'])) {
+            return new \ArrayIterator();
+        }
+        return new \ArrayIterator($this->data['similar']);
+    }
+
 }
