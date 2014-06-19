@@ -76,7 +76,7 @@ class Client
         );
     }
 
-    public function getProductWithSimilars($id, $count = 5, $country = 'US')
+    public function getEbayProductWithSimilars($id, $count = 5, $country = 'US')
     {
         $url = sprintf(self::EBAY_PRODUCT_WITH_SIMILAR_URL,
                 $this->domain, $id, $this->key, $this->translationLang, $country);
