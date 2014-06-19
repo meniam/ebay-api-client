@@ -4,6 +4,10 @@ namespace Catalol;
 
 class Product
 {
+    private $domainList = [
+        'DE' => 'ebay.de',
+        'UK' => 'ebay.co.uk'
+    ];
     private $data;
 
     public function __construct(array $data)
@@ -12,11 +16,20 @@ class Product
     }
 
     /**
+     * @deprecated use getCurrentPrice() instead
      * @return float
      */
     public function getPrice()
     {
         return $this->data['price'];
+    }
+
+    /**
+     * @return Price
+     */
+    public function getCurrentPrice()
+    {
+        return new Price($this->data['price'], $this->data['currency']);
     }
 
     /**
@@ -29,6 +42,7 @@ class Product
 
 
     /**
+     * @deprecated use getCurrentPrice() instead
      * @return string
      */
     public function getCurrency()
@@ -37,21 +51,31 @@ class Product
     }
 
     /**
-     * @return \ArrayIterator|Aspect[]
+     * @deprecated
+     * @see getAspects
      */
     public function getAspectList()
+    {
+        return $this->getAspects();
+    }
+
+    /**
+     * @return \ArrayIterator|Aspect[]
+     */
+    public function getAspects()
     {
         if (!$this->data['aspects']) {
             return new \ArrayIterator([]);
         }
         $aspects = [];
-        foreach ($this->data['aspects']['original'] as $name => $valueList) {
-            $translatedAspect = each($this->data['aspects']['translation']);
+        $translatedKeys = array_combine(array_keys($this->data['aspects']['original']),
+            array_keys($this->data['aspects']['translation']));
+        foreach ($translatedKeys as $name=>$translatedName) {
             $cond = new AspectCondition();
             $cond->setName($name)
-                ->setValueList($valueList)
-                ->setTranslationName($translatedAspect['key'])
-                ->setTranslationValueList($translatedAspect['value']);
+                ->setValueList($this->data['aspects']['original'][$name])
+                ->setTranslationName($translatedName)
+                ->setTranslationValueList($this->data['aspects']['translation'][$translatedName]);
             $aspects[] = new Aspect($cond);
         }
         return new \ArrayIterator($aspects);
@@ -66,11 +90,18 @@ class Product
     }
 
     /**
+     * @deprecated
+     * @see getShippingCost()
      * @return ShippingCostSummary
      */
     public function getShippingCostSummary()
     {
-        return new ShippingCostSummary(current($this->data['shipping_cost']));
+        return $this->getShippingCost();
+    }
+
+    public function getShippingCost()
+    {
+        return new ShippingCostSummary($this->data['shipping_cost']);
     }
 
     /**
@@ -95,6 +126,14 @@ class Product
     public function getDescription()
     {
         return $this->data['description'];
+    }
+
+    public function getUrlBySiteId()
+    {
+        if (!array_key_exists($this->getSiteId(), $this->domainList)) {
+            return $this->getUrl();
+        }
+        return preg_replace("#ebay\.com#i", $this->domainList[$this->getSiteId()], $this->getUrl());
     }
 
     /**
@@ -227,9 +266,19 @@ class Product
     }
 
     /**
+     * @deprecated
+     * @see Product::getLocation
      * @return string
      */
     public function getLocated()
+    {
+        return $this->getLocation();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
     {
         return $this->data['location'];
     }
@@ -264,6 +313,14 @@ class Product
     public function getMinimumToBid()
     {
         return new Price($this->data['minimum_to_bid']['value'], $this->data['minimum_to_bid']['currency']);
+    }
+
+    public function getSimilars()
+    {
+        if (!isset($this->data['similar'])) {
+            return new \ArrayIterator();
+        }
+        return new \ArrayIterator($this->data['similar']);
     }
 
 }

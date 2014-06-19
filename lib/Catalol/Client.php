@@ -4,8 +4,8 @@ namespace Catalol;
 
 use Catalol\Exception\ApiError;
 use Catalol\Exception\BadResponse;
-use Catalol\Exception\ServiceIsDown;
 use Catalol\Exception\NotFound;
+use Catalol\Exception\ServiceIsDown;
 
 class Client
 {
@@ -13,10 +13,12 @@ class Client
     const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
+    const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s';
 
     private $httpClient;
     private $key;
     private $domain;
+    private $translationLang = 'ru';
 
     public function __construct(\Buzz\Browser $httpClient, $domain, $key)
     {
@@ -25,9 +27,14 @@ class Client
         $this->domain = $domain;
     }
 
-    public function getEbayProduct($id, $lang = 'ru', $countryShortName = 'USA')
+    public function setTranslationLang($lang)
     {
-        $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key, (string)$lang, $countryShortName);
+        $this->translationLang = strval($lang);
+    }
+
+    public function getEbayProduct($id)
+    {
+        $url = sprintf(self::EBAY_PRODUCT_URL, $this->domain, $id, $this->key, $this->translationLang);
         try {
             $response = $this->httpClient->get($url);
         } catch (\Buzz\Exception\ClientException $e) {
@@ -35,6 +42,59 @@ class Client
         }
         $content = $this->parseResponse($response);
         return new Product($content);
+    }
+
+    public function find(FilterCondition $filter)
+    {
+        $url = sprintf(self::EBAY_SEARCH_URL, $this->domain, $this->key);
+        $url .= '&' . $filter->toString();
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+
+        return new ProductList(
+            new \ArrayIterator(
+                array_map(
+                    function($elem){return new Product($elem);},
+                    $content['products'])
+            ),
+            $content['total']
+        );
+    }
+
+    public function getSimilarEbayProduct($id, $count = 5)
+    {
+        $url = sprintf(self::EBAY_SIMILAR_URL, $this->domain, $id, $this->key);
+        $response = $this->httpClient->get($url . '&count=' . $count);
+        $content = $this->parseResponse($response);
+        return new \ArrayIterator(
+            array_map(
+                function ($elem) {
+                    return new Product($elem);
+                },
+                $content['products'])
+        );
+    }
+
+    public function getProductWithSimilars($id, $count = 5)
+    {
+        $url = sprintf(self::EBAY_PRODUCT_WITH_SIMILAR_URL,
+                $this->domain, $id, $this->key, $this->translationLang);
+        try {
+            $response = $this->httpClient->get($url . '&count=' . $count);
+        } catch (\Buzz\Exception\ClientException $e) {
+            throw new ServiceIsDown('host is unreachable');
+        }
+        $content = $this->parseResponse($response);
+        return new Product($content);
+    }
+
+    public function getShipping(Shipping $shipping)
+    {
+        $url = sprintf(self::EBAY_SHIPPING_URL, $this->domain, $shipping->getId(), $this->key);
+        $url .= '&' . $shipping->toString();
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+        return new ShippingCostSummary($content);
     }
 
     private function parseResponse(\Buzz\Message\MessageInterface $response)
@@ -64,45 +124,5 @@ class Client
             default:
                 throw new BadResponse($content['message']);
         }
-    }
-
-    public function find(FilterCondition $filter)
-    {
-        $url = sprintf(self::EBAY_SEARCH_URL, $this->domain, $this->key);
-        $url .= '&' . $filter->toString();
-        $response = $this->httpClient->get($url);
-        $content = $this->parseResponse($response);
-
-        return new ProductList(
-            new \ArrayIterator(
-                array_map(
-                    function($elem){return new Product($elem);},
-                    $content['products'])
-            ),
-            $content['total']
-        );
-    }
-
-    public function getSimilarEbayProduct($id)
-    {
-        $url = sprintf(self::EBAY_SIMILAR_URL, $this->domain, $id, $this->key);
-        $response = $this->httpClient->get($url);
-        $content = $this->parseResponse($response);
-        return new \ArrayIterator(
-            array_map(
-                function ($elem) {
-                    return new Product($elem);
-                },
-                $content['products'])
-        );
-    }
-
-    public function getShipping(Shipping $shipping)
-    {
-        $url = sprintf(self::EBAY_SHIPPING_URL, $this->domain, $shipping->getId(), $this->key);
-        $url .= '&' . $shipping->toString();
-        $response = $this->httpClient->get($url);
-        $content = $this->parseResponse($response);
-        return new ShippingCostSummary($content);
     }
 }

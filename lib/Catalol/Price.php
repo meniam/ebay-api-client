@@ -4,7 +4,6 @@ namespace Catalol;
 class Price
 {
     private $value;
-
     private $currency;
 
     public function __construct($value = null, $currency = null)
