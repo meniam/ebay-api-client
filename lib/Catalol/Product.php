@@ -320,7 +320,13 @@ class Product
         if (!isset($this->data['similar'])) {
             return new \ArrayIterator();
         }
-        return new \ArrayIterator($this->data['similar']);
+        return new \ArrayIterator(
+            array_map(
+                function ($elem) {
+                    return new Product($elem);
+                },
+                $this->data['similar'])
+        );
     }
 
 }
