@@ -144,4 +144,10 @@ class FilterCondition
         $this->params['exact_phrase'] = $phrase;
         return $this;
     }
+
+    public function bySKU($sku)
+    {
+        $this->params['value'] = $sku;
+        return $this;
+    }
 }
