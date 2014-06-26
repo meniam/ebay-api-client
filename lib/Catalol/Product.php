@@ -307,6 +307,13 @@ class Product
         return $this->data['is_auction'] && !empty($this->data['fixed_price']['value']);
     }
 
+    public function hasVariation()
+    {
+         if (!empty($this->data['variations']) || !empty($this->data['has_variation'])) {
+             return true;
+         }
+    }
+
     /**
      * @return Price
      */
