@@ -8,12 +8,12 @@ class Aspect
     private $translationName;
     private $translationValueArray;
 
-    public function __construct(AspectCondition $cond)
+    public function __construct(AspectCondition $condition)
     {
-        $this->name = $cond->getName();
-        $this->valueArray = $cond->getValueList();
-        $this->translationName = $cond->getTranslationName();
-        $this->translationValueArray = $cond->getTranslationValueList();
+        $this->name = $condition->getName();
+        $this->valueArray = $condition->getValueList();
+        $this->translationName = $condition->getTranslationName();
+        $this->translationValueArray = $condition->getTranslationValueList();
     }
 
     /**
