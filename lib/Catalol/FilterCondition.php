@@ -88,13 +88,13 @@ class FilterCondition
 
     public function auctionOnly()
     {
-        $this->params['auction'] = 'true';
+        $this->params['auction'] = 1;
         return $this;
     }
 
     public function withoutAuction()
     {
-        $this->params['auction'] = 'false';
+        $this->params['auction'] = 0;
         return $this;
     }
 
