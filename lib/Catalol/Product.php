@@ -336,4 +336,9 @@ class Product
         );
     }
 
+    public function getNormalizedSkus()
+    {
+        return $this->data['normalized_sku'];
+    }
+
 }
