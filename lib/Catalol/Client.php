@@ -12,6 +12,7 @@ use Catalol\Histogram\Condition;
 class Client
 {
     const EBAY_PRODUCT_URL = 'http://%s/ebay/product/%s.json?key=%s&lang=%s&country=%s';
+    const EBAY_PRODUCT_URL_NO_CACHE = 'http://%s/ebay/product/%s/no-cache.json?key=%s&lang=%s&country=%s';
     const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
@@ -39,6 +40,19 @@ class Client
     public function getEbayProduct($id, $country = 'US')
     {
         $url = sprintf(self::EBAY_PRODUCT_URL,
+            $this->domain, $id, $this->key, $this->translationLang, $country);
+        try {
+            $response = $this->httpClient->get($url);
+        } catch (\Buzz\Exception\ClientException $e) {
+            throw new ServiceIsDown('host is unreachable');
+        }
+        $content = $this->parseResponse($response);
+        return new Product($content);
+    }
+
+    public function getEbayProductWithoutCache($id, $country = 'US')
+    {
+        $url = sprintf(self::EBAY_PRODUCT_URL_NO_CACHE,
             $this->domain, $id, $this->key, $this->translationLang, $country);
         try {
             $response = $this->httpClient->get($url);
