@@ -2,6 +2,11 @@
 
 namespace Catalol;
 
+use Catalol\Aspect\AspectName;
+use Catalol\Aspect\AspectValue;
+use Catalol\Aspect\NameBuilder;
+use Catalol\Aspect\ValueBuilder;
+
 class Product
 {
     private $domainList = [
@@ -60,6 +65,8 @@ class Product
     }
 
     /**
+     * @deprecated
+     * @see getAttributes
      * @return \ArrayIterator|Aspect[]
      */
     public function getAspects()
@@ -79,6 +86,30 @@ class Product
             $aspects[] = new Aspect($cond);
         }
         return new \ArrayIterator($aspects);
+    }
+
+    public function getAttributes()
+    {
+        if (!$this->data['attributes']) {
+            return new \ArrayIterator([]);
+        }
+        $result = [];
+        foreach ($this->data['attributes'] as $attribute) {
+            $values = [];
+            foreach ($attribute['values'] as $value) {
+                $vb = new ValueBuilder();
+                $vb->setValue($value['value']);
+                $vb->setTranslation($value['translation']);
+                $vb->setSpecial($value['special']);
+                $values[] = new AspectValue($vb);
+            }
+            $nb = new NameBuilder();
+            $nb->setName($attribute['name']);
+            $nb->setTranslation($attribute['translation']);
+            $nb->setValues(new \ArrayIterator($values));
+            $result[] = new AspectName($nb);
+        }
+        return new \ArrayIterator($result);
     }
 
     /**
