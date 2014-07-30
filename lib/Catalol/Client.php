@@ -76,7 +76,7 @@ class Client
                     function($elem){return new Product($elem);},
                     $content['products'])
             ),
-            $content['total']
+            $content['total'], new InfoList($content)
         );
     }
 
