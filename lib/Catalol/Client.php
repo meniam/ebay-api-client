@@ -14,6 +14,7 @@ class Client
     const EBAY_PRODUCT_URL = 'http://%s/ebay/product/%s.json?key=%s&lang=%s&country=%s';
     const EBAY_PRODUCT_URL_NO_CACHE = 'http://%s/ebay/product/%s/no-cache.json?key=%s&lang=%s&country=%s';
     const EBAY_SEARCH_URL = 'http://%s/ebay/search?key=%s';
+    const EBAY_DIRECT_SEARCH_URL = 'http://%s/ebay/direct-search?key=%s';
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
     const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&lang=%s&country=%s';
@@ -66,6 +67,23 @@ class Client
     public function find(FilterCondition $filter)
     {
         $url = sprintf(self::EBAY_SEARCH_URL, $this->domain, $this->key);
+        $url .= '&' . $filter->toString();
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+
+        return new ProductList(
+            new \ArrayIterator(
+                array_map(
+                    function($elem){return new Product($elem);},
+                    $content['products'])
+            ),
+            $content['total']
+        );
+    }
+
+    public function findDirect(FilterCondition $filter)
+    {
+        $url = sprintf(self::EBAY_DIRECT_SEARCH_URL, $this->domain, $this->key);
         $url .= '&' . $filter->toString();
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
