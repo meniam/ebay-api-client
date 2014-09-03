@@ -7,10 +7,13 @@ class ProductList
 
     private $total;
 
-    public function __construct(\ArrayIterator $productList, $total)
+    private $info;
+
+    public function __construct(\ArrayIterator $productList, $total, $info)
     {
         $this->productList = $productList;
         $this->total = $total;
+        $this->info = $info;
     }
 
     /**
@@ -27,6 +30,14 @@ class ProductList
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * @return InfoList
+     */
+    public function getInfo()
+    {
+        return $this->info;
     }
 
 
