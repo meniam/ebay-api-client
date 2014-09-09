@@ -18,8 +18,7 @@ class Client
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
     const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&lang=%s&country=%s';
-    const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/category/%s/%s/aspects?key=%s&lang=%s';
-    const CONDITION_HISTOGRAM_URL = 'http://%s/ebay/category/%s/%s/conditions?key=%s&lang=%s';
+    const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/category/%s/%s/direct-aspects?key=%s&lang=%s';
 
     private $httpClient;
     private $key;
@@ -98,28 +97,16 @@ class Client
         );
     }
 
-    public function getAspectHistogram($categoryId, $country)
+
+    public function getAspectHistogramDirect($categoryId, $country)
     {
         $url = sprintf(self::ASPECT_HISTOGRAM_URL, $this->domain, $country, $categoryId,
             $this->key, $this->translationLang);
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
         $result = [];
-        foreach ($content['histogram'] as $name=>$aspect) {
-            $result[] = new AspectName($name, $aspect);
-        }
-        return new \ArrayIterator($result);
-    }
-
-    public function getConditionHistogram($categoryId, $country)
-    {
-        $url = sprintf(self::CONDITION_HISTOGRAM_URL, $this->domain, $country, $categoryId,
-            $this->key, $this->translationLang);
-        $response = $this->httpClient->get($url);
-        $content = $this->parseResponse($response);
-        $result = [];
-        foreach ($content['histogram'] as $id=>$count) {
-            $result[] = new Condition($id, $count);
+        foreach ($content['histogram'] as $aspect) {
+            $result[] = new AspectName($aspect['name'], $aspect);
         }
         return new \ArrayIterator($result);
     }

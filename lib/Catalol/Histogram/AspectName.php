@@ -9,8 +9,8 @@ class AspectName extends Item
     public function __construct($name, array $data)
     {
         parent::__construct($name, $data);
-        foreach ($data['values'] as $vName=>$value) {
-            $this->values[] = new AspectValue($vName, $value);
+        foreach ($data['values'] as $value) {
+            $this->values[] = new AspectValue($value['name'], $value);
         }
     }
 
