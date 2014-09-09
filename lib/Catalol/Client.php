@@ -18,7 +18,7 @@ class Client
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
     const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&lang=%s&country=%s';
-    const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/category/%s/%s/direct-aspects?key=%s&lang=%s';
+    const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/direct-aspects?key=%s';
 
     private $httpClient;
     private $key;
@@ -98,10 +98,11 @@ class Client
     }
 
 
-    public function getAspectHistogramDirect($categoryId, $country)
+    public function getAspectHistogramDirect(FilterCondition $filter, $maxAspectsCount = 3, $maxValuesCount = 6)
     {
-        $url = sprintf(self::ASPECT_HISTOGRAM_URL, $this->domain, $country, $categoryId,
-            $this->key, $this->translationLang);
+        $url = sprintf(self::ASPECT_HISTOGRAM_URL, $this->domain, $this->key);
+        $url .= '&' . $filter->toString() . '&aspect_count=' . $maxAspectsCount .
+            '&value_count=' . $maxValuesCount;;
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
         $result = [];
