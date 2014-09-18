@@ -4,16 +4,20 @@ namespace Catalol;
 class ProductList
 {
     private $productList;
-
     private $total;
-
     private $info;
+    private $brands;
 
-    public function __construct(\ArrayIterator $productList, $total, $info)
+    public function __construct(array $content)
     {
-        $this->productList = $productList;
-        $this->total = $total;
-        $this->info = $info;
+        $this->productList = new \ArrayIterator(
+            array_map(
+                function($elem){return new Product($elem);},
+                $content['products'])
+        );
+        $this->total = $content['total'];
+        $this->info = new InfoList($content);
+        $this->brands = $content['brands'];
     }
 
     /**
@@ -33,6 +37,7 @@ class ProductList
     }
 
     /**
+     * @deprecated
      * @return InfoList
      */
     public function getInfo()
@@ -40,5 +45,9 @@ class ProductList
         return $this->info;
     }
 
+    public function getBrands()
+    {
+        return $this->brands;
+    }
 
 }

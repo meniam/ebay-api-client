@@ -69,15 +69,7 @@ class Client
         $url .= '&' . $filter->toString();
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
-
-        return new ProductList(
-            new \ArrayIterator(
-                array_map(
-                    function($elem){return new Product($elem);},
-                    $content['products'])
-            ),
-            $content['total'], new InfoList($content)
-        );
+        return new ProductList($content);
     }
 
     public function findDirect(FilterCondition $filter)
@@ -86,15 +78,7 @@ class Client
         $url .= '&' . $filter->toString();
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
-
-        return new ProductList(
-            new \ArrayIterator(
-                array_map(
-                    function($elem){return new Product($elem);},
-                    $content['products'])
-            ),
-            $content['total'], new InfoList($content)
-        );
+        return new ProductList($content);
     }
 
 
@@ -102,7 +86,7 @@ class Client
     {
         $url = sprintf(self::ASPECT_HISTOGRAM_URL, $this->domain, $this->key);
         $url .= '&' . $filter->toString() . '&aspect_count=' . $maxAspectsCount .
-            '&value_count=' . $maxValuesCount;;
+            '&value_count=' . $maxValuesCount;
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
         $result = [];
