@@ -150,4 +150,9 @@ class FilterCondition
         $this->params['value'] = $sku;
         return $this;
     }
+
+    public function byAspects(array $aspects)
+    {
+        $this->params['aspects'] = $aspects;
+    }
 }
