@@ -151,8 +151,15 @@ class FilterCondition
         return $this;
     }
 
+    public function byKeywords($query)
+    {
+        $this->params['query'] = $query;
+        return $this;
+    }
+
     public function byAspects(array $aspects)
     {
         $this->params['aspects'] = $aspects;
+        return $this;
     }
 }
