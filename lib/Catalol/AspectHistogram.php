@@ -1,0 +1,31 @@
+<?php
+
+namespace Catalol;
+
+use Catalol\Histogram\AspectName;
+
+class AspectHistogram
+{
+    private $aspects;
+    private $aspectNames = [];
+
+    public function __construct(array $data)
+    {
+        $aspects = [];
+        foreach ($data['histogram'] as $aspect) {
+            $aspects[] = new AspectName($aspect['name'], $aspect);
+        }
+        $this->aspects = new \ArrayIterator($aspects);
+        $this->aspectNames = $data['other_params'];
+    }
+
+    public function getAspects()
+    {
+        return $this->aspects;
+    }
+
+    public function getRestAspectNames()
+    {
+        return $this->aspectNames;
+    }
+}

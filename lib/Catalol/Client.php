@@ -7,7 +7,6 @@ use Catalol\Exception\BadResponse;
 use Catalol\Exception\NotFound;
 use Catalol\Exception\ServiceIsDown;
 use Catalol\Histogram\AspectName;
-use Catalol\Histogram\Condition;
 
 class Client
 {
@@ -89,11 +88,7 @@ class Client
             '&value_count=' . $maxValuesCount;
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
-        $result = [];
-        foreach ($content['histogram'] as $aspect) {
-            $result[] = new AspectName($aspect['name'], $aspect);
-        }
-        return new \ArrayIterator($result);
+        return new AspectHistogram($content);
     }
 
     public function getSimilarEbayProduct($id, $count = 5)
