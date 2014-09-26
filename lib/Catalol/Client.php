@@ -18,6 +18,7 @@ class Client
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
     const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&lang=%s&country=%s';
     const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/direct-aspects?key=%s';
+    const CATEGORY_HISTOGRAM_URL = 'http://%s/ebay/category-histogram?key=%s';
 
     private $httpClient;
     private $key;
@@ -89,6 +90,15 @@ class Client
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
         return new AspectHistogram($content);
+    }
+
+    public function getCategoryHistogramDirect(FilterCondition $filter)
+    {
+        $url = sprintf(self::CATEGORY_HISTOGRAM_URL, $this->domain, $this->key);
+        $url .= '&' . $filter->toString();
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+        return $content;
     }
 
     public function getSimilarEbayProduct($id, $count = 5)
