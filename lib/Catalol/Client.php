@@ -6,7 +6,6 @@ use Catalol\Exception\ApiError;
 use Catalol\Exception\BadResponse;
 use Catalol\Exception\NotFound;
 use Catalol\Exception\ServiceIsDown;
-use Catalol\Histogram\AspectName;
 
 class Client
 {
@@ -87,6 +86,15 @@ class Client
         $url = sprintf(self::ASPECT_HISTOGRAM_URL, $this->domain, $this->key);
         $url .= '&' . $filter->toString() . '&aspect_count=' . $maxAspectsCount .
             '&value_count=' . $maxValuesCount;
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+        return new AspectHistogram($content);
+    }
+
+    public function getPartOfAspectHistogram(FilterCondition $filter, $aspectName)
+    {
+        $url = sprintf(self::ASPECT_HISTOGRAM_URL, $this->domain, $this->key);
+        $url .= '&' . $filter->toString() . '&only=' . urlencode($aspectName);
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
         return new AspectHistogram($content);
