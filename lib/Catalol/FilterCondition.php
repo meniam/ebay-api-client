@@ -15,6 +15,7 @@ class FilterCondition
     const PRICE_ASC = 'PRICE_ASC';
     const EXPIRE_TIME_DESC = 'EXPIRE_TIME_DESC';
     const EXPIRE_TIME_ASC = 'EXPIRE_TIME_ASC';
+    const BEST_MATCH = 'BEST_MATCH';
 
     private $params = [];
 
