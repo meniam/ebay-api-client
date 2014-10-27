@@ -57,6 +57,12 @@ class FilterCondition
         return $this;
     }
 
+    public function byCountry($country = self::USA)
+    {
+        $this->params['country'] = $country;
+        return $this;
+    }
+
     public function onlyUndefined()
     {
         $this->params['condition_id'] = '0';
