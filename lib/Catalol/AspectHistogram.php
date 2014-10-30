@@ -10,6 +10,7 @@ class AspectHistogram
     private $aspectNames = [];
     private $selection = [];
     private $brands = [];
+    private $brandName;
 
     public function __construct(array $data)
     {
@@ -21,6 +22,7 @@ class AspectHistogram
         $this->aspectNames = $data['other_params'];
         $this->selection = $data['selection'];
         $this->brands = $data['brands'];
+        $this->brandName = isset($data['brand_field']) ? $data['brand_field'] : null;
     }
 
     public function getAspects()
@@ -41,5 +43,10 @@ class AspectHistogram
     public function getBrands()
     {
         return $this->brands;
+    }
+
+    public function getBrandName()
+    {
+        return $this->brandName;
     }
 }
