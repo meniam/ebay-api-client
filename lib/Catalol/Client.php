@@ -18,6 +18,7 @@ class Client
     const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&lang=%s&country=%s';
     const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/direct-aspects?key=%s';
     const CATEGORY_HISTOGRAM_URL = 'http://%s/ebay/category-histogram?key=%s';
+    const AMAZON_SEARCH_URL = 'http://%s/amazon/search?key=%s';
 
     private $httpClient;
     private $key;
@@ -74,6 +75,15 @@ class Client
     public function findDirect(FilterCondition $filter)
     {
         $url = sprintf(self::EBAY_DIRECT_SEARCH_URL, $this->domain, $this->key);
+        $url .= '&' . $filter->toString();
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+        return new ProductList($content);
+    }
+
+    public function amazonFind(FilterCondition $filter)
+    {
+        $url = sprintf(self::AMAZON_SEARCH_URL, $this->domain, $this->key);
         $url .= '&' . $filter->toString();
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
