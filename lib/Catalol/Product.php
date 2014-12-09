@@ -372,4 +372,9 @@ class Product
         return $this->data['normalized_sku'];
     }
 
+    public function getSource()
+    {
+        return $this->data['source'];
+    }
+
 }
