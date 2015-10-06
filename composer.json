@@ -1,7 +1,19 @@
 {
     "name": "meniam/ebay-api-client",
     "description": "ebay API client",
-    "version": "1.4.14",
+    "version": "1.0.3",
+    "keywords": ["ebay", "api", "php", "client"],
+    "homepage": "https://github.com/meniam/ebay-api-client",
+    "license":  "MIT",
+    "authors": [
+        {
+            "name": "Dmitry Shalyapin"
+        },
+        {
+            "name": "Eugene Myazin",
+            "email": "eugene@myazin.ru"
+        }
+    ],
     "require": {
         "kriswallsmith/buzz": "v0.10"
     },
