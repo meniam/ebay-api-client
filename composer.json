@@ -1,6 +1,6 @@
 {
-    "name": "esteit/catalol-api-client",
-    "description": "FPC client",
+    "name": "meniam/ebay-api-client",
+    "description": "ebay API client",
     "version": "1.4.14",
     "require": {
         "kriswallsmith/buzz": "v0.10"
