@@ -71,6 +71,7 @@ class FilterCondition
 
     /**
      * @param string
+     * @return $this
      */
     public function expiredAfter($time)
     {
@@ -80,6 +81,7 @@ class FilterCondition
 
     /**
      * @param string
+     * @return $this
      */
     public function expiredBefore($time)
     {
@@ -163,6 +165,13 @@ class FilterCondition
         $this->params['query'] = $query;
         return $this;
     }
+
+    public function byBrandSearchKeywords($query)
+    {
+        $this->params['brand_search_query'] = $query;
+        return $this;
+    }
+
 
     public function byAspects(array $aspects)
     {
