@@ -18,6 +18,7 @@ class Client
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
     const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&lang=%s&country=%s';
     const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/direct-aspects?key=%s';
+    const EBAY_API_ASPECT_HISTOGRAM_URL = 'http://%s/ebay-api/direct-aspects?key=%s';
     const CATEGORY_HISTOGRAM_URL = 'http://%s/ebay/category-histogram?key=%s';
     const AMAZON_SEARCH_URL = 'http://%s/amazon/search?key=%s';
 
@@ -101,7 +102,6 @@ class Client
         return new ProductList($content);
     }
 
-
     public function getAspectHistogramDirect(FilterCondition $filter, $maxAspectsCount = 3, $maxValuesCount = 6)
     {
         $url = sprintf(self::ASPECT_HISTOGRAM_URL, $this->domain, $this->key);
@@ -115,6 +115,25 @@ class Client
     public function getPartOfAspectHistogram(FilterCondition $filter, $aspectName)
     {
         $url = sprintf(self::ASPECT_HISTOGRAM_URL, $this->domain, $this->key);
+        $url .= '&' . $filter->toString() . '&only=' . urlencode($aspectName);
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+        return new AspectHistogram($content);
+    }
+
+    public function ebayApiGetAspectHistogramDirect(FilterCondition $filter, $maxAspectsCount = 3, $maxValuesCount = 6)
+    {
+        $url = sprintf(self::EBAY_API_ASPECT_HISTOGRAM_URL, $this->domain, $this->key);
+        $url .= '&' . $filter->toString() . '&aspect_count=' . $maxAspectsCount .
+            '&value_count=' . $maxValuesCount;
+        $response = $this->httpClient->get($url);
+        $content = $this->parseResponse($response);
+        return new AspectHistogram($content);
+    }
+
+    public function ebayApiGetPartOfAspectHistogram(FilterCondition $filter, $aspectName)
+    {
+        $url = sprintf(self::EBAY_API_ASPECT_HISTOGRAM_URL, $this->domain, $this->key);
         $url .= '&' . $filter->toString() . '&only=' . urlencode($aspectName);
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
