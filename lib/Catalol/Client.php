@@ -17,6 +17,7 @@ class Client
     const EBAY_SIMILAR_URL = 'http://%s/ebay/product/%s/similar?key=%s';
     const EBAY_SHIPPING_URL = 'http://%s/ebay/product/%s/shipping?key=%s';
     const EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay/product/%s/with-similar?key=%s&lang=%s&country=%s';
+    const EBAY_API_EBAY_PRODUCT_WITH_SIMILAR_URL = 'http://%s/ebay-api/product/%s/with-similar?key=%s&lang=%s&country=%s';
     const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/direct-aspects?key=%s';
     const EBAY_API_ASPECT_HISTOGRAM_URL = 'http://%s/ebay-api/direct-aspects?key=%s';
     const CATEGORY_HISTOGRAM_URL = 'http://%s/ebay/category-histogram?key=%s';
@@ -175,6 +176,22 @@ class Client
         $content = $this->parseResponse($response);
         return new Product($content);
     }
+
+
+    public function ebayApiGetEbayProductWithSimilars($id, $count = 5, $country = 'US')
+    {
+        $url = sprintf(self::EBAY_API_EBAY_PRODUCT_WITH_SIMILAR_URL,
+            $this->domain, $id, $this->key, $this->translationLang, $country);
+
+        try {
+            $response = $this->httpClient->get($url . '&count=' . $count);
+        } catch (\Buzz\Exception\ClientException $e) {
+            throw new ServiceIsDown('host is unreachable');
+        }
+        $content = $this->parseResponse($response);
+        return new Product($content);
+    }
+
 
     public function getShipping(Shipping $shipping)
     {

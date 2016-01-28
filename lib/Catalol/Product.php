@@ -264,6 +264,14 @@ class Product
     }
 
     /**
+     * @return int
+     */
+    public function getCategoryId()
+    {
+        return $this->data['category_id'];
+    }
+
+    /**
      * @return string
      */
     public function getSiteId()
