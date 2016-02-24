@@ -1,7 +1,7 @@
 {
     "name": "meniam/ebay-api-client",
     "description": "ebay API client",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "keywords": ["ebay", "api", "php", "client"],
     "homepage": "https://github.com/meniam/ebay-api-client",
     "license":  "MIT",
