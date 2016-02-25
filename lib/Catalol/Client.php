@@ -22,6 +22,7 @@ class Client
     const ASPECT_HISTOGRAM_URL = 'http://%s/ebay/direct-aspects?key=%s';
     const EBAY_API_ASPECT_HISTOGRAM_URL = 'http://%s/ebay-api/direct-aspects?key=%s';
     const CATEGORY_HISTOGRAM_URL = 'http://%s/ebay/category-histogram?key=%s';
+    const EBAY_API_CATEGORY_HISTOGRAM_URL = 'http://%s/ebay-api/category-histogram?key=%s';
     const AMAZON_SEARCH_URL = 'http://%s/amazon/search?key=%s';
 
     private $httpClient;
@@ -144,7 +145,7 @@ class Client
 
     public function getCategoryHistogramDirect(FilterCondition $filter)
     {
-        $url = sprintf(self::CATEGORY_HISTOGRAM_URL, $this->domain, $this->key);
+        $url = sprintf(self::EBAY_API_CATEGORY_HISTOGRAM_URL, $this->domain, $this->key);
         $url .= '&' . $filter->toString();
         $response = $this->httpClient->get($url);
         $content = $this->parseResponse($response);
